@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  api:
+    build: # Конфигурация для сборки образа
+      context: . # Контекст для сборки
+      dockerfile: Dockerfile # Путь к Dockerfile
+    depends_on: # Зависимости для сервиса
+      - postgres # Зависимость от сервиса postgres
+      - redis # Зависимость от сервиса redis
+    ports: # Порты для сервиса
+      - 8080:8080 # Порт на котором будет доступен сервис
+
+  # Сервис для базы данных
+  postgres:
+    image: postgres:15
+    environment: # Переменные окружения для базы данных
+      POSTGRES_USER: postgres # Пользователь базы данных
+      POSTGRES_PASSWORD: postgres # Пароль пользователя базы данных
+      POSTGRES_DB: postgres # Имя базы данных
+    ports:
+      - 5432:5432
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
